@@ -6,7 +6,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab 9</title>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "8e3884d9637543b3babd7f2e6c84a811"
+    });
+  </script>
 
+  TrackJS.track('Testing TrackJS!');
   <style>
     button {
       margin: 3px;
@@ -88,6 +95,14 @@
   </main>
 
   <script>
+    class customError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "customError";
+      }
+    }
+    
+    let count = 0;
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -98,10 +113,97 @@
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
 
+    let textarea = document.querySelector("textarea");
+
+    try {
+      textarea.innerHTML = "test";
+    }
+
+    catch (err){
+      alert(new customError("UNABLE TO ACCESS TEXTAREA INNERHTML"));
+      console.error(err);
+    }
+
+    finally {
+      console.log("CHANGE TEXTAREA VIA INNERHTML");
+    }
+
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    errorBtns[0].addEventListener("click", function() {
+      console.log("CONSOLE.LOG()");
+    })
+
+    errorBtns[1].addEventListener("click", function() {
+      console.error("CONSOLE.ERROR()");
+    })
+    
+    errorBtns[2].addEventListener("click", function() {
+      count++;
+      console.log("COUNT = " + count);
+    })
+    
+    errorBtns[3].addEventListener("click", function() {
+      console.warn("CONSOLE.WARN()");
+    })
+
+    errorBtns[4].addEventListener("click", function() {
+      console.assert(1 + 1 === 3, "EXPECTED 1 + 1 TO BE 3");
+    })
+
+    errorBtns[5].addEventListener("click", function() {
+      console.clear();
+    })
+
+    errorBtns[6].addEventListener("click", function() {
+      console.dir(errorBtns[6]);
+    })
+
+    errorBtns[7].addEventListener("click", function() {
+      console.dirxml(errorBtns[6]);
+    })
+
+    errorBtns[8].addEventListener("click", function() {
+      console.group();
+    })
+
+    errorBtns[9].addEventListener("click", function() {
+      console.groupEnd();
+    })
+
+    errorBtns[10].addEventListener("click", function() {
+      console.table([
+        {name: "John", age: 25},
+        {name: "Jane", age: 22},
+        {name: "Jack", age: 30}
+      ]);
+    })
+
+    errorBtns[11].addEventListener("click", function() {
+      // how do i run a timer on errorBtns[11] click and stop it on errorBtns[12] click?
+      console.time("TIMER");
+    })
+
+    errorBtns[12].addEventListener("click", function() {
+      console.timeEnd("TIMER");
+    })
+
+    errorBtns[13].addEventListener("click", function() {
+      console.trace();
+    })
+
+    errorBtns[14].addEventListener("click", function() {
+      // cause an error and upon catching it just log a message to console
+      try {
+        throw new customError("GLOBAL CUSTOM ERROR");
+      }
+      catch (err) {
+        console.log("GLOBAL CUSTOM ERROR CAUGHT");
+      }
+    })
   </script>
 </body>
 
