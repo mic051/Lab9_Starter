@@ -10,10 +10,10 @@
   <script>
     window.TrackJS && TrackJS.install({ 
       token: "8e3884d9637543b3babd7f2e6c84a811"
+      // for more configuration options, see https://docs.trackjs.com
     });
   </script>
-
-  TrackJS.track('Testing TrackJS!');
+  
   <style>
     button {
       margin: 3px;
@@ -101,7 +101,7 @@
         this.name = "customError";
       }
     }
-    
+
     let count = 0;
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -112,21 +112,6 @@
       let operator = document.querySelector('#operator').value;
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
-
-    let textarea = document.querySelector("textarea");
-
-    try {
-      textarea.innerHTML = "test";
-    }
-
-    catch (err){
-      alert(new customError("UNABLE TO ACCESS TEXTAREA INNERHTML"));
-      console.error(err);
-    }
-
-    finally {
-      console.log("CHANGE TEXTAREA VIA INNERHTML");
-    }
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
@@ -176,9 +161,9 @@
 
     errorBtns[10].addEventListener("click", function() {
       console.table([
-        {name: "John", age: 25},
-        {name: "Jane", age: 22},
-        {name: "Jack", age: 30}
+        {name: "John"},
+        {name: "Jane"},
+        {name: "Jack"}
       ]);
     })
 
@@ -196,14 +181,29 @@
     })
 
     errorBtns[14].addEventListener("click", function() {
-      // cause an error and upon catching it just log a message to console
+      console.log("TRIGGERING GLOBAL ERROR");
       try {
         throw new customError("GLOBAL CUSTOM ERROR");
       }
       catch (err) {
-        console.log("GLOBAL CUSTOM ERROR CAUGHT");
+        console.log(err);
       }
     })
+
+    try {
+      let textarea = document.querySelector("textarea");
+      textarea.innerHTML = "test";
+    }
+
+    catch (err){
+      console.error(err);
+      TrackJS.track(new customError("UNABLE TO ACCESS TEXTAREA INNERHTML"));
+      throw(new customError("UNABLE TO ACCESS TEXTAREA INNERHTML"));
+    }
+
+    finally {
+      console.log("CHANGE TEXTAREA VIA INNERHTML");
+    }
   </script>
 </body>
 
